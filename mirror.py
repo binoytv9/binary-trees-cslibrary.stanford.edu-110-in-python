@@ -1,5 +1,4 @@
-"""	For each node in a binary search tree, create a new duplicate node, and insert the duplicate as the left child of the
-original node. The resulting tree should still be a binary search tree.	"""
+"""	Change a tree so that the roles of the left and right pointers are swapped at every node.	"""
 
 
 class TreeNode:
@@ -23,14 +22,12 @@ class TreeNode:
 			if self.has_right_child():
 				self.right._printTree()
 
-	def _doubleTree(node):
-		if node != None:
-			if node.has_left_child():
-				node.left._doubleTree()
-			if node.has_right_child():
-				node.right._doubleTree()
-
-			node.left = TreeNode(node.data,node.left)
+	def swapLeftRight(self):
+		self.left,self.right = self.right,self.left
+		if self.left:
+			self.left.swapLeftRight()
+		if self.right:
+			self.right.swapLeftRight()
 
 
 class BinaryTree:
@@ -51,22 +48,22 @@ class BinaryTree:
 				current_node.left = TreeNode(data, parent = current_node)
 		else:
 			if current_node.has_right_child():
-				self._put(data, current_node.right_child)
+				self._put(data, current_node.right)
 			else:
 				current_node.right = TreeNode(data, parent = current_node)
 
 	def printTree(self):
 		if self.root:
 			self.root._printTree()
-			print
+			print '\n\n'
 		else:
 			print '\ttree empty'
-				
-	def doubleTree(self):
+
+	def mirror(self):
 		if self.root:
-			self.root._doubleTree()
+			self.root.swapLeftRight()
 		else:
-			print '\ttree empty'
+			print '\tempty tree'
 
 
 
@@ -75,6 +72,10 @@ t.insert(2)
 t.insert(1)
 t.insert(3)
 
+print 'tree t :'
 t.printTree()
-t.doubleTree()
+
+t.mirror()
+
+print 'after mirroring '
 t.printTree()

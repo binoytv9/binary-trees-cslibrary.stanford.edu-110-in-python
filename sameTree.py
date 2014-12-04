@@ -1,5 +1,5 @@
-"""	For each node in a binary search tree, create a new duplicate node, and insert the duplicate as the left child of the
-original node. The resulting tree should still be a binary search tree.	"""
+"""	Given two binary trees, return true if they are structurally identical -- they are made of nodes with the same values
+arranged in the same way.	"""
 
 
 class TreeNode:
@@ -23,14 +23,13 @@ class TreeNode:
 			if self.has_right_child():
 				self.right._printTree()
 
-	def _doubleTree(node):
-		if node != None:
-			if node.has_left_child():
-				node.left._doubleTree()
-			if node.has_right_child():
-				node.right._doubleTree()
-
-			node.left = TreeNode(node.data,node.left)
+	def sameNode(self,other):
+		if self.left and self.right and other.left and other.right:
+			return self.data == other.data and self.left.sameNode(other.left) and self.right.sameNode(other.right)
+		elif self.left or self.right or other.left or other.right:
+			return False
+		else:
+			return self.data == other.data
 
 
 class BinaryTree:
@@ -51,22 +50,25 @@ class BinaryTree:
 				current_node.left = TreeNode(data, parent = current_node)
 		else:
 			if current_node.has_right_child():
-				self._put(data, current_node.right_child)
+				self._put(data, current_node.right)
 			else:
 				current_node.right = TreeNode(data, parent = current_node)
 
 	def printTree(self):
 		if self.root:
 			self.root._printTree()
-			print
+			print '\n\n'
 		else:
 			print '\ttree empty'
 				
-	def doubleTree(self):
-		if self.root:
-			self.root._doubleTree()
+	def sameTree(self,other):
+		if self.root == None and other.root == None:
+			return True
+		elif self.root == None or other.root == None:
+			return False
 		else:
-			print '\ttree empty'
+			return self.root.sameNode(other.root)
+		
 
 
 
@@ -75,6 +77,14 @@ t.insert(2)
 t.insert(1)
 t.insert(3)
 
+r = BinaryTree()
+r.insert(2)
+r.insert(4)
+r.insert(3)
+
+print 'tree t :'
 t.printTree()
-t.doubleTree()
-t.printTree()
+print 'tree r :'
+r.printTree()
+
+print t.sameTree(r)
